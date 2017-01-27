@@ -11,6 +11,9 @@
   <%-    end -%>
   </forward>
   <%-  end -%>
+  <%- if @domain -%>
+  <domain name='<%= @domain -%>'/>
+  <%- end -%>
   <%-end -%>
   <%- if @bridge -%>
   <bridge name='<%= @bridge -%>'<%- if @forward_mode and @forward_mode != 'bridge' -%> stp='on' delay='0'<%-end-%>/>

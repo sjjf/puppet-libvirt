@@ -71,6 +71,7 @@ define libvirt::network (
   $ensure             = 'present',
   $autostart          = false,
   $bridge             = undef,
+  $domain             = undef,
   $forward_mode       = undef,
   $forward_dev        = undef,
   $forward_interfaces = [],
