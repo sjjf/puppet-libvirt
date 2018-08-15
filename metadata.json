@@ -1,12 +1,12 @@
 {
   "name": "petems-libvirt",
-  "version": "1.0.0",
-  "author": ["Peter Souter", "Matthias Saou"],
+  "version": "1.1.0",
+  "author": ["Simon Fowler", "Peter Souter", "Matthias Saou"],
   "license": "Apache-2.0",
   "summary": "Libvirt virtualization API and capabilities.",
-  "source": "git://github.com/petems/puppet-libvirt",
-  "project_page": "https://github.com/petems/puppet-libvirt",
-  "issues_url": "https://github.com/petems/puppet-libvirt/issues",
+  "source": "git://github.com/sjjf/puppet-libvirt",
+  "project_page": "https://github.com/sjjf/puppet-libvirt",
+  "issues_url": "https://github.com/sjjf/puppet-libvirt/issues",
   "tags": ["libvirt", "kvm", "qemu", "virtualization"],
   "operatingsystem_support": [
     {
@@ -19,17 +19,17 @@
     },
     {
     "operatingsystem":"Debian",
-    "operatingsystemrelease":[ "6", "7" ]
+    "operatingsystemrelease":[ "6", "7", "8" ]
     },
     {
     "operatingsystem":"Ubuntu",
-    "operatingsystemrelease":[ "12", "14" ]
+    "operatingsystemrelease":[ "12", "14", "16", "18" ]
     }
   ],
   "requirements": [
     {
     "name": "puppet",
-    "version_requirement": ">=2.7.20 <4.1.0"
+    "version_requirement": ">=2.7.20"
     }
   ],
   "dependencies": [
