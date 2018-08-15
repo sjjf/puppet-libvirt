@@ -15,6 +15,8 @@ class libvirt::params {
       }
       $radvd_package = 'radvd'
       $sysconfig = {}
+      $defaults_file = '/etc/sysconfig/libvirtd'
+      $defaults_template = "${module_name}/sysconfig/libvirtd.erb"
       $deb_default = false
     }
     'Debian': {
@@ -22,9 +24,15 @@ class libvirt::params {
       $virtinst_package = 'virtinst'
       $radvd_package = 'radvd'
       $sysconfig = false
-      $deb_default = {}
+      $defaults_file = '/etc/default/libvirt-bin'
+      $defaults_template = "${module_name}/default/libvirt-bin.erb"
+      $deb_default = $::service_provider ? {
+        'systemd' => { 'libvirtd_opts' => '' },  # no '-d', it confuses systemd
+        default   => {},
+      }
       # UNIX socket
       $auth_unix_ro = 'none'
+      $unix_sock_ro_perms = 'none'
       $unix_sock_rw_perms = '0770'
       $auth_unix_rw = 'none'
       case $::operatingsystem {
@@ -45,6 +53,7 @@ class libvirt::params {
       $radvd_package = 'radvd'
       $sysconfig = false
       $deb_default = false
+      $unix_sock_dir = '/var/run/libvirt'
     }
   }
 
