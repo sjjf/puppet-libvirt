@@ -41,7 +41,7 @@ class libvirt::params {
       }
       # UNIX socket
       $auth_unix_ro = 'none'
-      $unix_sock_ro_perms = 'none'
+      $unix_sock_ro_perms = '0440'
       $unix_sock_rw_perms = '0770'
       $unix_sock_admin_perms = '0700'
       $auth_unix_rw = 'none'
