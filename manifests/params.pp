@@ -23,11 +23,11 @@ class libvirt::params {
       $virtinst_package = 'virtinst'
       $radvd_package = 'radvd'
       $sysconfig = false
-      case $::lsbdistroname {
+      case $::lsbdistcodename {
         'bionic': {
          $libvirt_package = 'libvirt-daemon-system'
          $defaults_file = '/etc/default/libvirtd'
-         $defaults_template = "${modules_name}/devault/libvirtd.erb"
+         $defaults_template = "${module_name}/default/libvirtd.erb"
         }
         default: {
           $libvirt_package = 'libvirt-bin'
@@ -44,6 +44,7 @@ class libvirt::params {
       $unix_sock_ro_perms = '0440'
       $unix_sock_rw_perms = '0770'
       $unix_sock_admin_perms = '0700'
+      $unix_sock_dir = '/var/run/libvirt'
       $auth_unix_rw = 'none'
       case $::operatingsystem {
         'LinuxMint': {
