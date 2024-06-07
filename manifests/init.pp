@@ -68,6 +68,7 @@ class libvirt (
   package { 'libvirt':
     ensure => installed,
     name   => $libvirt_package,
+    tag    => 'libvirt',
   }
 
   service { 'libvirtd':
@@ -75,7 +76,7 @@ class libvirt (
     name      => $libvirt_service,
     enable    => true,
     hasstatus => true,
-    require   => Package['libvirt'],
+    tag       => 'libvirt',
   }
 
   file { '/etc/libvirt/libvirtd.conf':
@@ -84,7 +85,7 @@ class libvirt (
     mode    => '0644',
     content => template('libvirt/libvirtd.conf.erb'),
     notify  => Service['libvirtd'],
-    require => Package['libvirt'],
+    tag     => 'libvirt',
   }
 
   file { '/etc/libvirt/qemu.conf':
@@ -93,7 +94,7 @@ class libvirt (
     mode    => '0644',
     content => template('libvirt/qemu.conf.erb'),
     notify  => Service['libvirtd'],
-    require => Package['libvirt'],
+    tag     => 'libvirt',
   }
 
   file { '/etc/sasl2/libvirt.conf':
@@ -102,7 +103,7 @@ class libvirt (
     mode    => '0644',
     content => template('libvirt/sasl2/libvirt.conf.erb'),
     notify  => Service['libvirtd'],
-    require => Package['libvirt'],
+    tag     => 'libvirt',
   }
 
   # The default network, automatically configured... disable it by default
@@ -120,21 +121,30 @@ class libvirt (
 
   # The most useful libvirt-related packages
   if $virtinst {
-    package { $virtinst_package: ensure => installed }
+    package { $virtinst_package:
+      ensure => installed,
+      tag    => 'libvirt',
+    }
   }
   if $qemu {
-    package { 'qemu-kvm': ensure => installed }
+    package { 'qemu-kvm':
+      ensure => installed,
+      tag    => 'libvirt',
+    }
     file { '/etc/sasl2/qemu-kvm.conf':
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
       content => template('libvirt/sasl2/qemu-kvm.conf.erb'),
       notify  => Service['libvirtd'],
-      require => [Package['libvirt'], Package['qemu-kvm']]
+      tag     => 'libvirt',
     }
   }
   if $radvd {
-    package { $radvd_package: ensure => installed }
+    package { $radvd_package:
+      ensure => installed,
+      tag    => 'libvirt',
+    }
   }
 
   # Optional changes to the sysconfig file (on RedHat), or the defaults file
@@ -145,7 +155,13 @@ class libvirt (
     mode    => '0644',
     content => template($defaults_template),
     notify  => Service['libvirtd'],
+    tag     => 'libvirt',
   }
+
+  # Ensure all the configuration is set before starting the service
+  Package <| tag == 'libvirt' |>
+  -> File <| tag == 'libvirt' |>
+  -> Service <| tag == 'libvirt' |>
 
   # Create Optional networks
   create_resources(libvirt::network, $networks, $networks_defaults)
