@@ -1,6 +1,6 @@
 {
-  "name": "petems-libvirt",
-  "version": "1.1.0",
+  "name": "sjjf-libvirt",
+  "version": "1.2.0",
   "author": ["Simon Fowler", "Peter Souter", "Matthias Saou"],
   "license": "Apache-2.0",
   "summary": "Libvirt virtualization API and capabilities.",
@@ -11,25 +11,25 @@
   "operatingsystem_support": [
     {
     "operatingsystem": "RedHat",
-    "operatingsystemrelease": [ "6", "7" ]
+    "operatingsystemrelease": [ "6", "7", "8", "9"]
     },
     {
     "operatingsystem": "CentOS",
-    "operatingsystemrelease": [ "6", "7" ]
+    "operatingsystemrelease": [ "6", "7", "8"]
     },
     {
     "operatingsystem":"Debian",
-    "operatingsystemrelease":[ "6", "7", "8" ]
+    "operatingsystemrelease":[ "6", "7", "8", "9", "10"]
     },
     {
     "operatingsystem":"Ubuntu",
-    "operatingsystemrelease":[ "12", "14", "16", "18" ]
+    "operatingsystemrelease":[ "12", "14", "16", "18", "20" ]
     }
   ],
   "requirements": [
     {
     "name": "puppet",
-    "version_requirement": ">=2.7.20"
+    "version_requirement": ">=5.0.0"
     }
   ],
   "dependencies": [
