@@ -1,4 +1,11 @@
+#### 2024-06-07 - 1.2.0
 * Add support for Linux Mint (#55, @ssaki).
+* Updates to templates
+* Various permissions fixes
+* Various other fixes/tweaks
+
+#### Unreleased - 1.1.0
+* stuff?
 
 #### 2015-04-28 - 1.0.0
 * Strip whitespace to fix pool detection (#30, @CyBeRoni).
