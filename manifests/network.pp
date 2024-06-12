@@ -14,7 +14,7 @@
 #  $forward_dev
 #    The interface to forward, useful in bridge and route mode
 #  $forward_interfaces
-#    An array of interfaces to forwad
+#    An array of interfaces to forward
 #  $ip and/or $ipv6 array hashes with
 #    address
 #    netmask (or alterntively prefix)
@@ -68,20 +68,32 @@
 # }
 #
 define libvirt::network (
-  $ensure             = 'present',
-  $autostart          = false,
-  $bridge             = undef,
-  $domain             = undef,
-  $forward_mode       = undef,
-  $forward_dev        = undef,
-  $forward_interfaces = [],
-  $ip                 = undef,
-  $ipv6               = undef,
-  $mac                = undef,
+  Variant[
+    'present',
+    'defined',
+    'enabled',
+    'running',
+    'undefined',
+    'absent'
+  ] $ensure  = 'present',
+  Boolean $autostart = false,
+  Optional[String] $bridge = undef,
+  Optional[String] $domain = undef,
+  Optional[Variant[
+    'nat',
+    'route',
+    'bridge',
+    'vepa',
+    'passthrough',
+    'private',
+    'hostdev'
+  ]] $forward_mode = undef,
+  Optional[String] $forward_dev  = undef,
+  Optional[Array[String]] $forward_interfaces = [],
+  Optional[Hash[String, Any]] $ip  = undef,
+  Optional[Hash[ String,Any]] $ipv6 = undef,
+  Optional[String] $mac = undef,
 ) {
-  validate_bool ($autostart)
-  validate_re ($ensure, '^(present|defined|enabled|running|undefined|absent)$',
-    'Ensure must be one of defined (present), enabled (running), or undefined (absent).')
 
   include ::libvirt::params
 
@@ -146,7 +158,8 @@ define libvirt::network (
       }
     }
     default : {
-      fail ("${module_name} This default case should never be reached in Libvirt::Network{'${title}':} on node ${::fqdn}.")
+      $node = $facts['networking']['fqdn']
+      fail ("${module_name} This default case should never be reached in Libvirt::Network{'${title}':} on node ${node}.")
     }
   }
 }

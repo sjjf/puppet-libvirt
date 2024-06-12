@@ -1,3 +1,7 @@
+#### 2024-06-12 - 1.1.1
+* Remove use of deprecated functions to support newer puppet versions.
+
+#### Undocumented Releases
 * Add support for Linux Mint (#55, @ssaki).
 
 #### 2015-04-28 - 1.0.0
