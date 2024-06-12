@@ -1,3 +1,7 @@
+#### 2024-06-12 - 1.2.1
+* Remove deprecated functions and start using parameter types, to support
+  newer puppet versions.
+
 #### 2024-06-07 - 1.2.0
 * Add support for Linux Mint (#55, @ssaki).
 * Updates to templates
