@@ -14,8 +14,8 @@
 #  $forward_dev
 #    The interface to forward, useful in bridge and route mode
 #  $forward_interfaces
-#    An array of interfaces to forward
-#  $ip and/or $ipv6 array hashes with
+#    An array of zero or more interfaces to forward
+#  $ip and/or $ipv6 array of zero or more hashes with
 #    address
 #    netmask (or alterntively prefix)
 #    dhcp This is another hash that consists of
@@ -89,9 +89,9 @@ define libvirt::network (
     'hostdev'
   ]] $forward_mode = undef,
   Optional[String] $forward_dev  = undef,
-  Optional[Array[String]] $forward_interfaces = [],
-  Optional[Hash[String, Any]] $ip  = undef,
-  Optional[Hash[ String,Any]] $ipv6 = undef,
+  Array[String] $forward_interfaces = [],
+  Array[Hash[String, Any]] $ip  = [],
+  Array[Hash[String, Any]] $ipv6 = [],
   Optional[String] $mac = undef,
 ) {
 
@@ -112,7 +112,6 @@ define libvirt::network (
   }
 
   $network_file   = "/etc/libvirt/qemu/networks/${title}.xml"
-  $autostart_file = "/etc/libvirt/qemu/networks/autostart/${title}.xml"
 
   case $ensure_file {
     'present': {
@@ -122,39 +121,45 @@ define libvirt::network (
         creates => $network_file,
         unless  => "test -f ${network_file}",
       }
-      exec { "virsh-net-define-${title}":
+      ~> exec { "virsh-net-define-${title}":
         command => "virsh net-define ${network_file}",
-        unless  => "virsh -q net-list --all | grep -Eq '^\s*${title}'",
-        require => Exec["create-${network_file}"],
+        unless  => "virsh net-list --persistent --name | grep -Eq '^${title}$'",
       }
       if $autostart {
         exec { "virsh-net-autostart-${title}":
           command => "virsh net-autostart ${title}",
-          require => Exec["virsh-net-define-${title}"],
-          creates => $autostart_file,
+          unless  => "virsh net-list --autostart --name| grep -Eq '^${title}$'",
+        }
+      } else {
+        exec { "virsh-net-autostart-disable-${title}":
+          command => "virsh net-autostart --disable ${title}",
+          onlyif  => "virsh net-list --autostart --name | grep -Eq '^${title}$'",
         }
       }
       if $ensure in [ 'enabled', 'running' ] {
         exec { "virsh-net-start-${title}":
           command => "virsh net-start ${title}",
-          require => Exec["virsh-net-define-${title}"],
-          unless  => "virsh -q net-list --all | grep -Eq '^\s*${title}\\s+active'",
+          onlyif  => "virsh net-list --inactive --name | grep -Eq '^${title}$'",
+        }
+      } else {
+        exec { "virsh-net-destroy-${title}":
+          command => "virsh net-destroy ${title}",
+          onlyif  => "virsh net-list --name | grep -Eq '^${title}$'",
         }
       }
     }
     'absent': {
-      exec { "virsh-net-destroy-${title}":
+      exec { "virsh-net-autostart-disable-${title}":
+        command => "virsh net-autostart --disable ${title}",
+        onlyif  => "virsh net-list --autostart --name | grep -Eq '^${title}$'",
+      }
+      ~> exec { "virsh-net-destroy-${title}":
         command => "virsh net-destroy ${title}",
-        onlyif  => "virsh -q net-list --all | grep -Eq '^\s*${title}\\s+active'",
+        onlyif  => "virsh net-list --name | grep -Eq '^${title}$'",
       }
-      exec { "virsh-net-undefine-${title}":
+      ~> exec { "virsh-net-undefine-${title}":
         command => "virsh net-undefine ${title}",
-        onlyif  => "virsh -q net-list --all | grep -Eq '^\s*${title}\\s+inactive'",
-        require => Exec["virsh-net-destroy-${title}"],
-      }
-      file { [ $network_file, $autostart_file ]:
-        ensure  => absent,
-        require => Exec["virsh-net-undefine-${title}"],
+        onlyif  => "virsh net-list --inactive | grep -Eq '^${title}$'",
       }
     }
     default : {
