@@ -1,6 +1,6 @@
 {
   "name": "sjjf-libvirt",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "author": ["Simon Fowler", "Peter Souter", "Matthias Saou"],
   "license": "Apache-2.0",
   "summary": "Libvirt virtualization API and capabilities.",
@@ -11,25 +11,25 @@
   "operatingsystem_support": [
     {
     "operatingsystem": "RedHat",
-    "operatingsystemrelease": [ "6", "7", "8", "9"]
+    "operatingsystemrelease": [ "8", "9" ]
     },
     {
     "operatingsystem": "CentOS",
-    "operatingsystemrelease": [ "6", "7", "8"]
+    "operatingsystemrelease": [ "8", "9" ]
     },
     {
     "operatingsystem":"Debian",
-    "operatingsystemrelease":[ "6", "7", "8", "9", "10"]
+    "operatingsystemrelease":[ "10", "11", "12" ]
     },
     {
     "operatingsystem":"Ubuntu",
-    "operatingsystemrelease":[ "12", "14", "16", "18", "20" ]
+    "operatingsystemrelease":[ "18", "20", "22" ]
     }
   ],
   "requirements": [
     {
     "name": "puppet",
-    "version_requirement": ">=5.0.0"
+    "version_requirement": ">=6.0.0"
     }
   ],
   "dependencies": [

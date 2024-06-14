@@ -1,3 +1,15 @@
+#### 2024-06-14 - 2.0.0
+* Rework all classes/defines to use types in their parameter lists.
+* Updated templates in light of type checking of parameters - values can be
+  treated differently now that the type checking is there to sanitise things.
+* Removed older distro releases from the supported OS list.
+* Added newer Ubuntu releases to the supported OS list.
+* Removed most/all pre-systemd code.
+* Consolidated sysconfig/defaults config files, replacing them with a single
+  systemd targeted template.
+* Deprecated deb_default and sysconfig parameters in favour of libvirtd_args
+  and libvirtd_env parameters.
+
 #### 2024-06-12 - 1.2.1
 * Remove deprecated functions and start using parameter types, to support
   newer puppet versions.
