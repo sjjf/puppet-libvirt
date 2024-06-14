@@ -1,29 +1,18 @@
-# Defaults for libvirtd initscript (/etc/init.d/libvirtd)
-# This is a POSIX shell fragment
+# Managed by Puppet! Local changes will be overridden!
+#
+# Environment settings for libvirtd service
 
-# Start libvirtd to handle qemu/kvm:
-<% if @deb_default['start_libvirtd'] -%>
-start_libvirtd="<%= @deb_default['start_libvirtd'] %>"
-<% else -%>
-start_libvirtd="yes"
+# Arguments passed to libvirtd, add "-l" to listen on tcp
+<%= @args_env_var %>="<%= @libvirtd_args.join(' ') %>"
+
+# Additional environment settings
+#
+# Can include the following, for a full list see the libvirt and qemu
+# documentation:
+#  - KRB5_KTNAME: override Kerberos keytab for SASL/GSSAPI
+#  - QEMU_AUDIO_DRV, SDL_AUDIODRIVER: override the QEMU/SDL default audio driver
+#  - LIBVIRTD_NOFILES_LIMIT: override the limit on open files
+#
+<% @libvirtd_env.each_pair do |key, value| -%>
+<%= key %>="<%= value %>"
 <% end -%>
-
-# options passed to libvirtd, add "-l" to listen on tcp
-<% if @deb_default['libvirtd_opts'] -%>
-libvirtd_opts="<%= @deb_default['libvirtd_opts'] %>"
-<% else -%>
-libvirtd_opts="-d"
-<% end -%>
-
-# pass in location of kerberos keytab
-<% if @deb_default['KRB5_KTNAME'] -%>
-export KRB5_KTNAME=<%= @deb_default['KRB5_KTNAME'] %>
-<% else -%>
-#export KRB5_KTNAME=/etc/libvirt/libvirt.keytab
-<% end -%>
-
-# Whether to mount a systemd like cgroup layout (only
-# useful when not running systemd)
-#mount_cgroups=yes
-# Which cgroups to mount
-#cgroups="memory devices"

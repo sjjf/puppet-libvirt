@@ -72,6 +72,15 @@
 #  $unix_sock_admin_perms:
 #    Options for the location and access controls for libvirtd's Unix sockets.
 #    In most cases these may be left with their defaults.
+#
+# Systemd unit file configuration
+#  $libvirtd_args:
+#    Optional array of arguments to be passed to libvirtd on startup.
+#    Default: []
+#  $libvirtd_env:
+#    Optional hash of KEY=VALUE pairs, which will be added to the libvirtd
+#    startup environment.
+#    Default: {}
 #  $deb_default:
 #    Optional hash of additional settings to be added to the debian defaults
 #    file.
@@ -127,6 +136,9 @@
 #    not enabled.
 #    Default: 'sasldb'
 #
+# Deprecated Paramters
+#  $deb_default
+#  $sysconfig
 # Sample Usage :
 #  include libvirt
 #
@@ -157,8 +169,9 @@ class libvirt (
   Optional[String] $unix_sock_ro_perms = $libvirt::params::unix_sock_ro_perms,
   Optional[String] $unix_sock_rw_perms = $libvirt::params::unix_sock_rw_perms,
   Optional[String] $unix_sock_admin_perms = $libvirt::params::unix_sock_admin_perms,
-  Optional[Hash] $deb_default  = $libvirt::params::deb_default,
-  Optional[Hash] $sysconfig    = $libvirt::params::sysconfig,
+  # systemd service configuration
+  Array[String] $libvirtd_args = $libvirt::params::libvirtd_args,
+  Hash[String, String] $libvirtd_env = $libvirt::params::libvirtd_env,
   # qemu.conf options
   String $qemu_vnc_listen      = '127.0.0.1',
   Boolean $qemu_vnc_sasl       = false,
@@ -174,7 +187,19 @@ class libvirt (
   String $sasl2_qemu_sasldb    = '/etc/qemu/passwd.db',
   String $sasl2_qemu_keytab    = '/etc/qemu/krb5.tab',
   String $sasl2_qemu_auxprop_plugin = 'sasldb',
+  # deprecated
+  $deb_default = undef,
+  $sysconfig = undef,
 ) inherits ::libvirt::params {
+
+  if $deb_default {
+    warning("The deb_default paramter is no longer supported!")
+    warning("Service configuration has been consolidated under libvirtd_args and libvirtd_env.")
+  }
+  if $sysconfig {
+    warning("The sysconfig paramter is no longer supported!")
+    warning("Service configuration has been consolidated under libvirtd_args and libvirtd_env.")
+  } 
 
   package { 'libvirt':
     ensure => installed,
@@ -259,6 +284,7 @@ class libvirt (
   }
 
   # Optional changes to the sysconfig file (on RedHat), or the defaults file
+  $args_env_var = $libvirt::params::args_env_var
   file { 'defaults_file':
     path    => $libvirt::params::defaults_file,
     owner   => 'root',
