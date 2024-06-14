@@ -20,9 +20,7 @@
 #
 # This is enabled by default, uncomment this to disable it
 #listen_tls = 0
-<% if @listen_tls == true -%>
-listen_tls = 1
-<% elsif @listen_tls == false -%>
+<% if @listen_tls == false -%>
 listen_tls = 0
 <% end -%>
 
@@ -38,8 +36,6 @@ listen_tls = 0
 #listen_tcp = 1
 <% if @listen_tcp == true -%>
 listen_tcp = 1
-<% elsif @listen_tcp == false -%>
-listen_tcp = 0
 <% end -%>
 
 
@@ -47,17 +43,13 @@ listen_tcp = 0
 # This can be a port number, or service name
 #
 #tls_port = "16514"
-<% if @tls_port -%>
 tls_port = "<%= @tls_port %>"
-<% end -%>
 
 # Override the port for accepting insecure TCP connections
 # This can be a port number, or service name
 #
 #tcp_port = "16509"
-<% if @tcp_port -%>
 tcp_port = "<%= @tcp_port %>"
-<% end -%>
 
 
 # Override the default configuration which binds to all network
@@ -80,8 +72,8 @@ listen_addr = "<%= @listen_addr %>"
 #
 # This is disabled by default, uncomment this to enable it
 #mdns_adv = 1
-<% if @mdns_adv == false or @mdns_adv == '0' -%>
-mdns_adv = 0
+<% if @mdns_adv == true -%>
+mdns_adv = 1
 <% end -%>
 
 # Override the default mDNS advertizement name. This must be
@@ -136,7 +128,6 @@ unix_sock_rw_perms = "<%= @unix_sock_rw_perms %>"
 # Default allows only owner (root), do not change it unless you are
 # sure to whom you are exposing the access to.
 #unix_sock_admin_perms = "0700"
-#unix_sock_rw_perms = "0770"
 <% if @unix_sock_admin_perms -%>
 unix_sock_admin_perms = "<%= @unix_sock_admin_perms %>"
 <% end -%>
@@ -175,9 +166,7 @@ unix_sock_dir = "<%= @unix_sock_dir %>"
 # To restrict monitoring of domains you may wish to enable
 # an authentication mechanism here
 #auth_unix_ro = "none"
-<%- if @auth_unix_ro -%>
 auth_unix_ro = "<%= @auth_unix_ro %>"
-<%- end -%>
 
 
 # Set an authentication scheme for UNIX read-write sockets
@@ -188,9 +177,7 @@ auth_unix_ro = "<%= @auth_unix_ro %>"
 # If the unix_sock_rw_perms are changed you may wish to enable
 # an authentication mechanism here
 #auth_unix_rw = "none"
-<%- if @auth_unix_rw -%>
 auth_unix_rw = "<%= @auth_unix_rw %>"
-<%- end -%>
 
 # Change the authentication scheme for TCP sockets.
 #
@@ -199,9 +186,7 @@ auth_unix_rw = "<%= @auth_unix_rw %>"
 # use, always enable SASL and use the GSSAPI or DIGEST-MD5
 # mechanism in /etc/sasl2/libvirt.conf
 #auth_tcp = "sasl"
-<% if @auth_tcp -%>
 auth_tcp = "<%= @auth_tcp %>"
-<% end -%>
 
 # Change the authentication scheme for TLS sockets.
 #
@@ -211,9 +196,7 @@ auth_tcp = "<%= @auth_tcp %>"
 # It is possible to make use of any SASL authentication
 # mechanism as well, by using 'sasl' for this option
 #auth_tls = "none"
-<% if @auth_tls -%>
 auth_tls = "<%= @auth_tls %>"
-<% end -%>
 
 
 # Change the API access control scheme

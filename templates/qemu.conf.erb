@@ -64,9 +64,7 @@
 # verification when allowing public access
 #
 #vnc_listen = "0.0.0.0"
-<% if @qemu_vnc_listen -%>
 vnc_listen = "<%= @qemu_vnc_listen %>"
-<% end -%>
 
 # Enable this option to have VNC served over an automatically created
 # unix socket. This prevents unprivileged access from users on the
@@ -89,8 +87,6 @@ vnc_listen = "<%= @qemu_vnc_listen %>"
 #vnc_tls = 1
 <% if @qemu_vnc_tls == true -%>
 vnc_tls = 1
-<% elsif @qemu_vnc_tls == false -%>
-vnc_tls = 0
 <% end -%>
 
 
@@ -143,8 +139,6 @@ vnc_tls = 0
 #vnc_sasl = 1
 <% if @qemu_vnc_sasl == true -%>
 vnc_sasl = 1
-<% elsif @qemu_vnc_sasl == false -%>
-vnc_sasl = 0
 <% end -%>
 
 
@@ -579,8 +573,6 @@ group = "<%= @qemu_group %>"
 #set_process_name = 1
 <% if @qemu_set_process_name == true -%>
 set_process_name = 1
-<% elsif @qemu_set_process_name == false -%>
-set_process_name = 0
 <% end -%>
 
 

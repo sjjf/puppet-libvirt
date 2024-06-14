@@ -4,11 +4,11 @@
 #
 class libvirt::params {
 
-  case $::osfamily {
+  case $::facts['os']['family'] {
     'RedHat': {
-      $libvirt_package = "libvirt.${::architecture}"
+      $libvirt_package = "libvirt.${facts['os']['architecture']}"
       $libvirt_service = 'libvirtd'
-      if versioncmp($::operatingsystemmajrelease, '7') >= 0 {
+      if versioncmp($facts['os']['release']['major'], '7') >= 0 {
         $virtinst_package = 'virt-install'
       } else {
         $virtinst_package = 'python-virtinst'
@@ -17,17 +17,23 @@ class libvirt::params {
       $sysconfig = {}
       $defaults_file = '/etc/sysconfig/libvirtd'
       $defaults_template = "${module_name}/sysconfig/libvirtd.erb"
-      $deb_default = false
+      $deb_default = undef
+      # these are just the defaults
+      $unix_sock_dir = '/var/run/libvirt'
+      $unix_sock_group = undef
+      $unix_sock_ro_perms = undef
+      $unix_sock_rw_perms = undef
+      $unix_sock_admin_perms = undef
     }
     'Debian': {
       $virtinst_package = 'virtinst'
       $radvd_package = 'radvd'
-      $sysconfig = false
-      case $::lsbdistcodename {
+      $sysconfig = undef
+      case $facts['os']['distro']['codename'] {
         'bionic': {
-         $libvirt_package = 'libvirt-daemon-system'
-         $defaults_file = '/etc/default/libvirtd'
-         $defaults_template = "${module_name}/default/libvirtd.erb"
+          $libvirt_package = 'libvirt-daemon-system'
+          $defaults_file = '/etc/default/libvirtd'
+          $defaults_template = "${module_name}/default/libvirtd.erb"
         }
         default: {
           $libvirt_package = 'libvirt-bin'
@@ -35,10 +41,8 @@ class libvirt::params {
           $defaults_template = "${module_name}/default/libvirt-bin.erb"
         }
       }
-      $deb_default = $::service_provider ? {
-        'systemd' => { 'libvirtd_opts' => '' },  # no '-d', it confuses systemd
-        default   => {},
-      }
+      # assume systemd, remove '-d'
+      $deb_default = { 'libvirtd_opts' => '' }
       # UNIX socket
       $auth_unix_ro = 'none'
       $unix_sock_ro_perms = '0440'
@@ -46,7 +50,7 @@ class libvirt::params {
       $unix_sock_admin_perms = '0700'
       $unix_sock_dir = '/var/run/libvirt'
       $auth_unix_rw = 'none'
-      case $::operatingsystem {
+      case $facts['os']['name'] {
         'LinuxMint': {
           $libvirt_service = 'libvirt-bin'
           $unix_sock_group = 'libvirtd'
@@ -62,9 +66,14 @@ class libvirt::params {
       $libvirt_service = 'libvirtd'
       $virtinst_package = 'python-virtinst'
       $radvd_package = 'radvd'
-      $sysconfig = false
-      $deb_default = false
-      $unix_sock_dir = '/var/run/libvirt'
+      $sysconfig = undef
+      $deb_default = undef
+      # don't touch the defaults if we don't have platform specific knowledge
+      $unix_sock_dir = undef
+      $unix_sock_group = undef
+      $unix_sock_ro_perms = undef
+      $unix_sock_rw_perms = undef
+      $unix_sock_admin_perms = undef
     }
   }
 

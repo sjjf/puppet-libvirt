@@ -111,7 +111,7 @@ define libvirt::network (
     /(undefined|absent)/                => 'absent',
   }
 
-  $network_file   = "/etc/libvirt/qemu/networks/${title}.xml"
+  $network_file = "/etc/libvirt/qemu/networks/${title}.xml"
 
   case $ensure_file {
     'present': {
