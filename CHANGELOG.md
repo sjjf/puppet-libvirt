@@ -1,6 +1,8 @@
-#### 2026-10-28 - 2.0.1
+#### 2026-10-28 - 2.0.2
 * Fixes for puppet8/openvox8
 * Minor cleanups
+
+#### 2026-10-28 - 2.0.1 REMOVED
 
 #### 2024-06-14 - 2.0.0
 * Rework all classes/defines to use types in their parameter lists.
