@@ -190,16 +190,16 @@ class libvirt (
   # deprecated
   $deb_default = undef,
   $sysconfig = undef,
-) inherits ::libvirt::params {
+) inherits libvirt::params {
 
   if $deb_default {
-    warning("The deb_default paramter is no longer supported!")
-    warning("Service configuration has been consolidated under libvirtd_args and libvirtd_env.")
+    warning('The deb_default paramter is no longer supported!')
+    warning('Service configuration has been consolidated under libvirtd_args and libvirtd_env.')
   }
   if $sysconfig {
-    warning("The sysconfig paramter is no longer supported!")
-    warning("Service configuration has been consolidated under libvirtd_args and libvirtd_env.")
-  } 
+    warning('The sysconfig paramter is no longer supported!')
+    warning('Service configuration has been consolidated under libvirtd_args and libvirtd_env.')
+  }
 
   package { 'libvirt':
     ensure => installed,
@@ -252,7 +252,7 @@ class libvirt (
     autostart    => true,
     forward_mode => 'nat',
     bridge       => 'virbr0',
-    ip           => [ $::libvirt::params::default_ip ],
+    ip           => [ $libvirt::params::default_ip ],
   }
 
   # The most useful libvirt-related packages
