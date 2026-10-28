@@ -99,7 +99,11 @@ define libvirt::network (
 
   # there's no guarantee that we'll be called in a context where the top level
   # class has been declared
-  $libvirt_service = pick($libvirt::libvirt_service, $libvirt::params::libvirt_service)
+  if defined('libvirt') {
+    $libvirt_service = $libvirt::libvirt_service
+  } else {
+    $libvirt_service = $libvirt::params::libvirt_service
+  }
 
   Exec {
     cwd         => '/',
