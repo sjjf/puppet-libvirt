@@ -1,3 +1,6 @@
+#### Unreleased
+* Fixes for puppet8/openvox8
+
 #### 2024-06-14 - 2.0.0
 * Rework all classes/defines to use types in their parameter lists.
 * Updated templates in light of type checking of parameters - values can be

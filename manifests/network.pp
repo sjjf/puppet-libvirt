@@ -97,12 +97,16 @@ define libvirt::network (
 
   include ::libvirt::params
 
+  # there's no guarantee that we'll be called in a context where the top level
+  # class has been declared
+  $libvirt_service = pick($::libvirt::libvirt_service, $::libvirt::params::libvirt_service)
+
   Exec {
     cwd         => '/',
     path        => '/bin:/usr/bin',
     user        => 'root',
     provider    => 'posix',
-    require     => Service[$::libvirt::libvirt_service],
+    require     => Service[$libvirt_service],
     environment => ['LC_ALL=en_US.utf8', ],
   }
 
