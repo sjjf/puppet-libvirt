@@ -1,6 +1,6 @@
 {
   "name": "sjjf-libvirt",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": ["Simon Fowler", "Peter Souter", "Matthias Saou"],
   "license": "Apache-2.0",
   "summary": "Libvirt virtualization API and capabilities.",
@@ -19,11 +19,11 @@
     },
     {
     "operatingsystem":"Debian",
-    "operatingsystemrelease":[ "10", "11", "12" ]
+    "operatingsystemrelease":[ "10", "11", "12", "13"]
     },
     {
     "operatingsystem":"Ubuntu",
-    "operatingsystemrelease":[ "18", "20", "22" ]
+    "operatingsystemrelease":[ "18", "20", "22", "24" ]
     }
   ],
   "requirements": [

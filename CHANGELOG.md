@@ -1,4 +1,4 @@
-#### Unreleased
+#### 2026-10-28 - 2.0.1
 * Fixes for puppet8/openvox8
 * Minor cleanups
 
