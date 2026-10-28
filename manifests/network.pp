@@ -93,7 +93,9 @@ define libvirt::network (
   Array[Hash[String, Any]] $ip  = [],
   Array[Hash[String, Any]] $ipv6 = [],
   Optional[String] $mac = undef,
-) inherits libvirt::params {
+) {
+
+  include libvirt::params
 
   # there's no guarantee that we'll be called in a context where the top level
   # class has been declared
